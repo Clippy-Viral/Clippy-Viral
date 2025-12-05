@@ -186,7 +186,7 @@
     <!-- VIDEO ITEM 1 -->
     <div class="video-card">
         <h2>Nombre del Video Aquí</h2>
-        <iframe src="AQUI_TU_LINK" allowfullscreen></iframe>
+        <iframe src="https://youtu.be/FPzWpdfH4vw" allowfullscreen></iframe>
         <p class="descripcion">Descripción del video aquí.</p>
         <p class="canal">Canal: Aquí</p>
     </div>
@@ -194,7 +194,7 @@
     <!-- VIDEO ITEM 2 -->
     <div class="video-card">
         <h2>Otro Video</h2>
-        <iframe src="LINK_AQUI" allowfullscreen></iframe>
+        <iframe src="https://youtu.be/FPzWpdfH4vw" allowfullscreen></iframe>
         <p class="descripcion">Descripción breve.</p>
         <p class="canal">Canal: Ejemplo</p>
     </div>
