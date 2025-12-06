@@ -9,11 +9,11 @@
 
 <style>
     :root {
-        --bg: #0c0c0c;
+        --bg: #0b0b0b;
         --panel: #151515;
         --accent: #4e9cff;
-        --text: #e8e8e8;
-        --text2: #b3b3b3;
+        --text: #eaeaea;
+        --text2: #b6b6b6;
         --radius: 18px;
         --shadow: 0 0 25px rgba(0,0,0,0.45);
     }
@@ -31,14 +31,14 @@
         overflow-x: hidden;
     }
 
-    /* NAV */
+    /* NAV RESPONSIVA */
     nav {
         position: fixed;
         top: 0;
         width: 100%;
-        padding: 20px 45px;
+        padding: 18px 25px;
         background: rgba(10, 10, 10, 0.75);
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
         border-bottom: 1px solid #1c1c1c;
         display: flex;
         justify-content: space-between;
@@ -46,18 +46,19 @@
         z-index: 1000;
     }
     nav .logo {
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 700;
-        letter-spacing: -1px;
     }
+
     nav ul {
-        display: flex;
-        gap: 25px;
         list-style: none;
+        display: flex;
+        gap: 22px;
     }
+
     nav ul li a {
-        text-decoration: none;
         color: var(--text2);
+        text-decoration: none;
         font-size: 15px;
         transition: .3s;
     }
@@ -65,48 +66,78 @@
         color: var(--accent);
     }
 
-    /* HERO */
-    .hero {
-        margin-top: 120px;
-        padding: 120px 45px;
-        background: linear-gradient(180deg, #181818, #0c0c0c);
-        text-align: center;
-    }
-    .hero h1 {
-        font-size: 52px;
-        margin-bottom: 20px;
-    }
-    .hero p {
-        max-width: 800px;
-        margin: auto;
-        color: var(--text2);
-        font-size: 18px;
+    /* NAV MÓVIL */
+    @media(max-width: 700px) {
+        nav ul {
+            display: none;
+        }
+        nav .logo {
+            font-size: 20px;
+        }
     }
 
-    /* SECCIONES */
-    .section-title {
-        margin: 60px 45px 25px;
-        font-size: 28px;
+    /* HERO MEJORADO */
+    .hero {
+        margin-top: 110px;
+        padding: 110px 25px;
+        background: radial-gradient(circle, #1c1c1c, #0b0b0b);
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 46px;
+        margin-bottom: 20px;
         font-weight: 700;
     }
 
-    .contenedor {
-        padding: 0 45px 80px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-        gap: 30px;
+    .hero p {
+        max-width: 850px;
+        margin: auto;
+        font-size: 18px;
+        color: var(--text2);
     }
 
-    /* TARJETA DE VIDEO (CLIC COMPLETO) */
+    @media(max-width: 700px) {
+        .hero h1 {
+            font-size: 32px;
+        }
+        .hero p {
+            font-size: 15px;
+        }
+    }
+
+    /* TÍTULOS DE SECCIÓN */
+    .section-title {
+        margin: 55px 25px 25px;
+        font-size: 26px;
+        font-weight: 700;
+    }
+
+    /* GRID RESPONSIVO */
+    .contenedor {
+        padding: 0 25px 80px;
+        display: grid;
+        gap: 30px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    @media(max-width: 450px) {
+        .contenedor {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* TARJETAS PREMIUM */
     .video-card {
         background: var(--panel);
         border-radius: var(--radius);
         overflow: hidden;
         box-shadow: var(--shadow);
-        transition: transform .25s, box-shadow .25s;
         cursor: pointer;
         text-decoration: none;
         color: var(--text);
+        transition: transform .25s, box-shadow .25s;
+        display: block;
     }
     .video-card:hover {
         transform: translateY(-6px);
@@ -117,22 +148,27 @@
         width: 100%;
         height: 190px;
         object-fit: cover;
+        transition: transform .35s ease;
+    }
+
+    .video-card:hover .video-img {
+        transform: scale(1.06);
     }
 
     .video-content {
-        padding: 18px;
+        padding: 20px;
     }
 
     .video-content h2 {
         font-size: 20px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         font-weight: 600;
     }
 
     .descripcion {
-        color: var(--text2);
         font-size: 14px;
-        margin-bottom: 10px;
+        color: var(--text2);
+        margin-bottom: 12px;
     }
 
     .canal {
@@ -145,8 +181,9 @@
     footer {
         padding: 25px;
         text-align: center;
-        color: var(--text2);
         border-top: 1px solid #1c1c1c;
+        color: var(--text2);
+        font-size: 14px;
     }
 </style>
 </head>
@@ -167,8 +204,8 @@
 <section class="hero">
     <h1>Tu Biblioteca Visual</h1>
     <p>
-        Agrega tus videos usando imágenes como portada y enlaces externos. 
-        Cuando el usuario haga clic, será redirigido al video original.
+        Plataforma de videos completamente estética, rápida y optimizada para celulares.
+        Usa imágenes como portada y redirige al usuario al enlace original del video.
     </p>
 </section>
 
@@ -176,23 +213,12 @@
 <h2 class="section-title" id="nuevos">Videos Nuevos</h2>
 <div class="contenedor">
 
-    <!-- VIDEO ITEM 1 -->
     <a href="https://www.youtube.com/watch?v=aGGBiJdLTxs" class="video-card" target="_blank">
         <img src="https://i.ytimg.com/vi/aGGBiJdLTxs/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLABQK0lDvs3kFG9wdusX9VwEw2Ajw" class="video-img" alt="portada">
         <div class="video-content">
-            <h2>Título del video</h2>
-            <p class="descripcion">Descripción del contenido.</p>
+            <h2>Título del Video</h2>
+            <p class="descripcion">Descripción del video.</p>
             <p class="canal">Canal: Ejemplo</p>
-        </div>
-    </a>
-
-    <!-- VIDEO ITEM 2 -->
-    <a href="https://www.youtube.com/watch?v=aGGBiJdLTxs" class="video-card" target="_blank">
-        <img src="https://i.ytimg.com/vi/aGGBiJdLTxs/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLABQK0lDvs3kFG9wdusX9VwEw2Ajw" class="video-img" alt="portada">
-        <div class="video-content">
-            <h2>Otro video</h2>
-            <p class="descripcion">Descripción aquí.</p>
-            <p class="canal">Canal: Ejemplo 2</p>
         </div>
     </a>
 
@@ -218,7 +244,7 @@
 <div class="contenedor">
 
     <a href="LINK" class="video-card" target="_blank">
-        <img src="IMAGEN" class="video-img">
+        <img src="IMAGEN">
         <div class="video-content">
             <h2>Favorito</h2>
             <p class="descripcion">Descripción.</p>
@@ -228,9 +254,7 @@
 
 </div>
 
-<footer>
-    VideoHub Premium — Diseño estético completo
-</footer>
+<footer>VideoHub Premium — Optimizado para Móvil</footer>
 
 </body>
 </html>
