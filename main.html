@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reproducir Video</title>
+<title>Video Showcase</title>
 
 <style>
     :root {
-        --bg: #0a0a0a;
-        --card: rgba(18, 18, 18, 0.6);
-        --text: #ffffff;
         --orange: #ff7b00;
-        --orange-light: #ffa347;
-        --glow: rgba(255, 140, 0, 0.45);
+        --orange-light: #ffb668;
+        --bg1: #0a0a0a;
+        --bg2: #141414;
+        --text: #ffffff;
+        --glass: rgba(20,20,20,0.55);
+        --glow: rgba(255,140,0,0.4);
     }
 
     * {
@@ -23,49 +24,103 @@
     }
 
     body {
-        background: var(--bg);
         background: radial-gradient(circle at top, #1b1b1b 0%, #000 80%);
-        color: var(--text);
-        display: flex;
-        justify-content: center;
-        align-items: center;
         min-height: 100vh;
-        padding: 24px;
+        color: var(--text);
         overflow-x: hidden;
     }
 
-    .container {
+    /* HEADER */
+    header {
         width: 100%;
-        max-width: 650px;
-        padding: 45px 38px;
-        border-radius: 22px;
-        backdrop-filter: blur(22px) saturate(160%);
-        -webkit-backdrop-filter: blur(22px) saturate(160%);
-        background: var(--card);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 
-            0 0 25px rgba(0,0,0,0.6),
-            0 0 40px var(--glow);
-        text-align: center;
-        animation: fadeIn 0.8s ease forwards;
+        padding: 18px 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        backdrop-filter: blur(14px);
+        background: rgba(0,0,0,0.25);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        z-index: 100;
+    }
+
+    header h2 {
+        font-size: 1.4rem;
+        background: linear-gradient(to right, var(--orange), var(--orange-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+    }
+
+    header nav a {
+        margin-left: 20px;
+        text-decoration: none;
+        color: var(--text);
+        opacity: 0.8;
+        transition: 0.25s ease;
+        font-size: 1rem;
+    }
+
+    header nav a:hover {
+        opacity: 1;
+        color: var(--orange);
+    }
+
+    /* PARTICLES */
+    .particles {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+    }
+    .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: var(--orange);
+        opacity: 0.6;
+        border-radius: 50%;
+        filter: blur(3px);
+        animation: float 10s infinite ease-in-out;
+    }
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(-80px) translateX(40px); }
+        100% { transform: translateY(0) translateX(0); }
+    }
+
+    /* MAIN CARD */
+    .container {
+        max-width: 700px;
+        margin: 150px auto 80px auto;
+        padding: 40px;
+        background: var(--glass);
+        border-radius: 25px;
+        backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid rgba(255,255,255,0.06);
+        box-shadow:
+            0 0 35px rgba(0,0,0,0.6),
+            0 0 60px var(--glow);
+        animation: fadeInUp 1s ease forwards;
         opacity: 0;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(35px); }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(40px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
     .preview-wrapper {
         position: relative;
-        margin-bottom: 28px;
+        margin-bottom: 30px;
     }
 
     .preview {
         width: 100%;
-        border-radius: 18px;
+        border-radius: 20px;
+        transition: 0.35s ease;
         box-shadow: 0 0 25px rgba(0,0,0,0.7);
-        transition: transform 0.35s ease, filter 0.35s ease;
     }
 
     .preview:hover {
@@ -75,104 +130,126 @@
 
     .glow-border {
         position: absolute;
-        inset: -4px;
-        border-radius: 20px;
+        inset: -5px;
+        border-radius: 23px;
         background: linear-gradient(135deg, var(--orange), var(--orange-light));
         filter: blur(18px);
-        opacity: 0.45;
+        opacity: 0.5;
+        animation: pulse 3.5s infinite ease-in-out;
         z-index: -1;
-        animation: pulse 3s infinite ease-in-out;
     }
 
     @keyframes pulse {
-        0% { opacity: 0.45; }
-        50% { opacity: 0.75; }
-        100% { opacity: 0.45; }
+        0% { opacity: 0.4; }
+        50% { opacity: 0.8; }
+        100% { opacity: 0.4; }
     }
 
     h1 {
-        font-size: 2.1rem;
-        font-weight: 800;
-        margin-bottom: 16px;
-        letter-spacing: -0.5px;
+        font-size: 2.2rem;
+        margin-bottom: 14px;
         background: linear-gradient(to right, var(--orange), var(--orange-light));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        font-weight: 900;
+        letter-spacing: -1px;
     }
 
     p {
-        font-size: 1.05rem;
+        font-size: 1.1rem;
+        line-height: 1.7rem;
         opacity: 0.85;
-        margin-bottom: 32px;
-        line-height: 1.6rem;
+        margin-bottom: 35px;
     }
 
     .btn {
         display: inline-block;
-        padding: 15px 38px;
-        background: var(--orange);
-        color: #000;
+        padding: 16px 38px;
+        font-size: 1.25rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--orange), var(--orange-light));
         border-radius: 50px;
-        font-size: 1.2rem;
-        font-weight: 700;
         text-decoration: none;
-        transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 0 22px var(--glow);
+        color: #000;
+        box-shadow: 0 0 30px var(--glow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .btn:hover {
-        background: var(--orange-light);
         transform: scale(1.07);
-        box-shadow: 0 0 35px var(--glow);
+        box-shadow: 0 0 50px var(--glow);
     }
 
-    /* RESPONSIVE */
+    .btn:active {
+        transform: scale(0.96);
+    }
+
+    /* FOOTER */
+    footer {
+        text-align: center;
+        padding: 30px 0;
+        opacity: 0.65;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+    }
+
     @media (max-width: 480px) {
-        .container {
-            padding: 32px 25px;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-        }
-
-        p {
-            font-size: 0.95rem;
-        }
-
+        .container { padding: 30px; }
+        h1 { font-size: 1.8rem; }
+        p { font-size: 1rem; }
         .btn {
             width: 100%;
-            padding: 18px 0;
-            font-size: 1.15rem;
+            padding: 18px;
         }
     }
 </style>
-
 </head>
+
 <body>
 
-<div class="container">
+<!-- PARTICLES -->
+<div class="particles">
+    <div class="particle" style="top:20%;left:15%;animation-duration:11s;"></div>
+    <div class="particle" style="top:70%;left:40%;animation-duration:9s;"></div>
+    <div class="particle" style="top:30%;left:80%;animation-duration:13s;"></div>
+    <div class="particle" style="top:60%;left:20%;animation-duration:12s;"></div>
+</div>
 
+<!-- HEADER -->
+<header>
+    <h2>VideoHub</h2>
+    <nav>
+        <a href="#">Inicio</a>
+        <a href="#">Videos</a>
+        <a href="#">Contacto</a>
+    </nav>
+</header>
+
+<!-- MAIN CARD -->
+<div class="container">
     <div class="preview-wrapper">
         <div class="glow-border"></div>
-        <img 
-            class="preview" 
-            src="https://i.ytimg.com/vi/aGGBiJdLTxs/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLABQK0lDvs3kFG9wdusX9VwEw2Ajw"
-            alt="Portada del Video">
+        <img class="preview"
+             src="https://i.ytimg.com/vi/aGGBiJdLTxs/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLABQK0lDvs3kFG9wdusX9VwEw2Ajw"
+             alt="Portada del Video">
     </div>
 
     <h1>Reproducir Contenido</h1>
 
     <p>
-        Visualiza el video completo haciendo clic en el botón inferior.  
-        Interfaz optimizada con un diseño moderno, dinámico y responsivo.
+        Accede al video completo con un solo clic. Interfaz diseñada con estética
+        moderna, iluminación suave, animaciones avanzadas y compatibilidad total con móvil.
     </p>
 
     <a class="btn" href="https://www.youtube.com/watch?v=aGGBiJdLTxs" target="_blank">
         Ver Video Completo
     </a>
-
 </div>
+
+<!-- FOOTER -->
+<footer>
+    VideoHub © Todos los derechos reservados
+</footer>
 
 </body>
 </html>
