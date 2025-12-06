@@ -3,20 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biblioteca de Videos</title>
+<title>VideoHub Premium</title>
 
-<!-- Fuente moderna -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
     :root {
-        --bg: #0b0b0b;
-        --bg2: #111;
-        --panel: #141414;
+        --bg: #0c0c0c;
+        --panel: #151515;
         --accent: #4e9cff;
         --text: #e8e8e8;
-        --text2: #b9b9b9;
+        --text2: #b3b3b3;
         --radius: 18px;
         --shadow: 0 0 25px rgba(0,0,0,0.45);
     }
@@ -29,8 +26,8 @@
 
     body {
         background: var(--bg);
-        color: var(--text);
         font-family: "Inter", sans-serif;
+        color: var(--text);
         overflow-x: hidden;
     }
 
@@ -40,26 +37,24 @@
         top: 0;
         width: 100%;
         padding: 20px 45px;
-        background: rgba(10, 10, 10, 0.7);
+        background: rgba(10, 10, 10, 0.75);
         backdrop-filter: blur(10px);
+        border-bottom: 1px solid #1c1c1c;
         display: flex;
         justify-content: space-between;
         align-items: center;
         z-index: 1000;
-        border-bottom: 1px solid #1d1d1d;
     }
     nav .logo {
         font-size: 26px;
         font-weight: 700;
         letter-spacing: -1px;
     }
-
     nav ul {
         display: flex;
         gap: 25px;
         list-style: none;
     }
-
     nav ul li a {
         text-decoration: none;
         color: var(--text2);
@@ -73,23 +68,19 @@
     /* HERO */
     .hero {
         margin-top: 120px;
-        width: 100%;
         padding: 120px 45px;
+        background: linear-gradient(180deg, #181818, #0c0c0c);
         text-align: center;
-        background: linear-gradient(180deg, #131313, #0b0b0b);
     }
-
     .hero h1 {
         font-size: 52px;
-        font-weight: 700;
         margin-bottom: 20px;
     }
-
     .hero p {
-        font-size: 18px;
-        color: var(--text2);
         max-width: 800px;
         margin: auto;
+        color: var(--text2);
+        font-size: 18px;
     }
 
     /* SECCIONES */
@@ -100,44 +91,48 @@
     }
 
     .contenedor {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 30px;
         padding: 0 45px 80px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        gap: 30px;
     }
 
-    /* TARJETAS DE VIDEO */
+    /* TARJETA DE VIDEO (CLIC COMPLETO) */
     .video-card {
         background: var(--panel);
-        padding: 18px;
         border-radius: var(--radius);
+        overflow: hidden;
         box-shadow: var(--shadow);
         transition: transform .25s, box-shadow .25s;
+        cursor: pointer;
+        text-decoration: none;
+        color: var(--text);
     }
-
     .video-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-6px);
         box-shadow: 0 0 35px rgba(0,0,0,0.6);
     }
 
-    .video-card h2 {
-        font-size: 20px;
-        margin-bottom: 10px;
-        font-weight: 600;
+    .video-img {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
     }
 
-    iframe {
-        width: 100%;
-        height: 230px;
-        border-radius: var(--radius);
-        border: none;
-        margin-bottom: 12px;
+    .video-content {
+        padding: 18px;
+    }
+
+    .video-content h2 {
+        font-size: 20px;
+        margin-bottom: 8px;
+        font-weight: 600;
     }
 
     .descripcion {
         color: var(--text2);
         font-size: 14px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
 
     .canal {
@@ -150,10 +145,8 @@
     footer {
         padding: 25px;
         text-align: center;
-        background: var(--bg2);
-        border-top: 1px solid #1d1d1d;
         color: var(--text2);
-        margin-top: 60px;
+        border-top: 1px solid #1c1c1c;
     }
 </style>
 </head>
@@ -172,10 +165,10 @@
 
 <!-- HERO -->
 <section class="hero">
-    <h1>Tu Biblioteca de Videos</h1>
+    <h1>Tu Biblioteca Visual</h1>
     <p>
-        Gestiona, visualiza y organiza tus videos desde una interfaz moderna, clara y elegante. 
-        Simplemente añade tus enlaces dentro del código y la plataforma los mostrará en tarjetas visuales.
+        Agrega tus videos usando imágenes como portada y enlaces externos. 
+        Cuando el usuario haga clic, será redirigido al video original.
     </p>
 </section>
 
@@ -184,35 +177,39 @@
 <div class="contenedor">
 
     <!-- VIDEO ITEM 1 -->
-    <div class="video-card">
-        <h2>Nombre del Video Aquí</h2>
-        <iframe src="https://youtu.be/FPzWpdfH4vw" allowfullscreen></iframe>
-        <p class="descripcion">Descripción del video aquí.</p>
-        <p class="canal">Canal: Aquí</p>
-    </div>
+    <a href="https://www.youtube.com/watch?v=aGGBiJdLTxs" class="video-card" target="_blank">
+        <img src="https://i.ytimg.com/vi/aGGBiJdLTxs/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLABQK0lDvs3kFG9wdusX9VwEw2Ajw" class="video-img" alt="portada">
+        <div class="video-content">
+            <h2>Título del video</h2>
+            <p class="descripcion">Descripción del contenido.</p>
+            <p class="canal">Canal: Ejemplo</p>
+        </div>
+    </a>
 
     <!-- VIDEO ITEM 2 -->
-    <div class="video-card">
-        <h2>Otro Video</h2>
-        <iframe src="https://youtu.be/FPzWpdfH4vw" allowfullscreen></iframe>
-        <p class="descripcion">Descripción breve.</p>
-        <p class="canal">Canal: Ejemplo</p>
-    </div>
+    <a href="https://www.youtube.com/watch?v=aGGBiJdLTxs" class="video-card" target="_blank">
+        <img src="https://i.ytimg.com/vi/aGGBiJdLTxs/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLABQK0lDvs3kFG9wdusX9VwEw2Ajw" class="video-img" alt="portada">
+        <div class="video-content">
+            <h2>Otro video</h2>
+            <p class="descripcion">Descripción aquí.</p>
+            <p class="canal">Canal: Ejemplo 2</p>
+        </div>
+    </a>
 
 </div>
-
 
 <!-- SECCIÓN 2 -->
 <h2 class="section-title" id="coleccion">Colección Principal</h2>
 <div class="contenedor">
 
-    <!-- DUPLICA Y AGREGA VIDEOS -->
-    <div class="video-card">
-        <h2>Título</h2>
-        <iframe src="LINK" allowfullscreen></iframe>
-        <p class="descripcion">Texto descriptivo.</p>
-        <p class="canal">Canal: Nombre</p>
-    </div>
+    <a href="LINK" class="video-card" target="_blank">
+        <img src="IMAGEN" class="video-img">
+        <div class="video-content">
+            <h2>Título</h2>
+            <p class="descripcion">Texto descriptivo.</p>
+            <p class="canal">Canal: Nombre</p>
+        </div>
+    </a>
 
 </div>
 
@@ -220,18 +217,19 @@
 <h2 class="section-title" id="favoritos">Favoritos</h2>
 <div class="contenedor">
 
-    <div class="video-card">
-        <h2>Título favorito</h2>
-        <iframe src="LINK" allowfullscreen></iframe>
-        <p class="descripcion">Descripción del video.</p>
-        <p class="canal">Canal: Ejemplo</p>
-    </div>
+    <a href="LINK" class="video-card" target="_blank">
+        <img src="IMAGEN" class="video-img">
+        <div class="video-content">
+            <h2>Favorito</h2>
+            <p class="descripcion">Descripción.</p>
+            <p class="canal">Canal: Ejemplo</p>
+        </div>
+    </a>
 
 </div>
 
-<!-- FOOTER -->
 <footer>
-    Plataforma estética de videos — Diseño premium completo
+    VideoHub Premium — Diseño estético completo
 </footer>
 
 </body>
