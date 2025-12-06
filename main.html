@@ -1,196 +1,427 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Galería de Videos</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VideoHub — Minimal, Premium & Responsive</title>
+
+<!-- Fuente -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-    /*--------------------------------------*/
-    /* ESTILO BASE */
-    /*--------------------------------------*/
-    :root {
-        --bg: #0f0f0f;
-        --card: #1a1a1a;
-        --accent: #ffffff;
-        --text-secondary: #cfcfcf;
-        --radius: 16px;
-        --transition: 0.35s ease;
-    }
+  :root{
+    --bg:#0b0b0b;
+    --panel:#111214;
+    --muted:#9ea3a8;
+    --accent:#4e9cff;
+    --card:#151617;
+    --glass: rgba(255,255,255,0.03);
+    --radius:14px;
+    --shadow: 0 10px 30px rgba(2,6,23,0.6);
+    --max-width:1200px;
+    color-scheme: dark;
+  }
 
-    body {
-        margin: 0;
-        background: var(--bg);
-        font-family: "Inter", sans-serif;
-        color: var(--accent);
-        overflow-x: hidden;
-    }
+  /* LIGHT THEME (overrides) */
+  :root[data-theme="light"]{
+    --bg: #f6f7f9;
+    --panel: #ffffff;
+    --muted: #5a6166;
+    --accent: #1b6ef6;
+    --card: #fafbfc;
+    --glass: rgba(3,7,18,0.03);
+    --shadow: 0 10px 30px rgba(17,24,39,0.06);
+    color-scheme: light;
+  }
 
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
+  *{box-sizing: border-box}
+  html,body{height:100%;margin:0;font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{
+    background: linear-gradient(180deg, var(--bg), #050505 120%);
+    color: color-mix(in srgb, var(--accent) 92%, black 8%);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.4;
+    padding-bottom:64px;
+  }
 
-    /*--------------------------------------*/
-    /* HERO */
-    /*--------------------------------------*/
-    .hero {
-        width: 100%;
-        padding: 80px 20px;
-        text-align: center;
-        background: linear-gradient(145deg, #141414, #0d0d0d, #161616);
-        background-size: 200% 200%;
-        animation: heroAnim 6s ease infinite;
-    }
+  .wrap{max-width:var(--max-width);margin:0 auto;padding:18px;}
 
-    @keyframes heroAnim {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:1200;
+    backdrop-filter: blur(8px);
+    background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.12));
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:var(--max-width);margin:0 auto;padding:14px 18px;}
+  .brand{display:flex;gap:12px;align-items:center;font-weight:700;font-size:1.05rem}
+  .brand .logo {
+    width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7fd1ff);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
+    box-shadow: 0 6px 18px rgba(30,60,120,0.12);
+  }
+  .nav-actions{display:flex;gap:12px;align-items:center}
+  .nav-actions button, .nav-actions select, .nav-actions input{background:var(--card);border:1px solid rgba(255,255,255,0.02);color:inherit;padding:8px 10px;border-radius:10px}
+  .nav-actions input{width:220px;min-width:120px}
+  .hamburger{display:none;background:transparent;border:none;color:inherit;font-size:22px;padding:8px}
 
-    .hero h1 {
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
+  /* HERO */
+  .hero{padding:34px 18px 22px;text-align:left;display:flex;gap:20px;align-items:center}
+  .hero .texts{flex:1}
+  .hero h1{font-size:2rem;margin:0 0 6px;letter-spacing:-0.6px}
+  .hero p{margin:0;color:var(--muted);max-width:760px}
 
-    .hero p {
-        color: var(--text-secondary);
-        max-width: 700px;
-        margin: 0 auto;
-        font-size: 1.1rem;
-    }
+  /* GRID / SECCIONES */
+  .controls{display:flex;gap:12px;align-items:center;padding:10px 18px}
+  .section-title{margin:24px 0 12px;font-size:1.08rem;font-weight:600}
 
-    /*--------------------------------------*/
-    /* CONTENEDOR DE VIDEOS */
-    /*--------------------------------------*/
-    .video-section {
-        width: 100%;
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 20px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 28px;
-    }
+  .grid{
+    display:grid;
+    gap:20px;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    padding:0 18px 34px;
+  }
 
-    .video-card {
-        background: var(--card);
-        border-radius: var(--radius);
-        overflow: hidden;
-        border: 1px solid #222;
-        box-shadow: 0 0 0 rgba(0,0,0,0);
-        transition: var(--transition);
-        display: flex;
-        flex-direction: column;
-    }
+  /* CARD */
+  .card{
+    display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;background:linear-gradient(180deg,var(--card), rgba(0,0,0,0.02));
+    border:1px solid rgba(255,255,255,0.02);
+    transition: transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s;
+    box-shadow: none;
+    cursor:pointer;text-decoration:none;color:inherit;
+  }
+  .card:focus{outline:3px solid rgba(78,156,255,0.18)}
+  .card:hover{transform: translateY(-8px) scale(1.01);box-shadow:var(--shadow)}
+  .thumb{width:100%;height:170px;object-fit:cover;display:block;background:#222}
+  .meta{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .title{font-size:1rem;font-weight:600}
+  .desc{font-size:0.92rem;color:var(--muted);min-height:38px}
+  .meta-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px}
+  .channel{font-size:0.88rem;color:var(--accent);font-weight:600}
+  .tag{font-size:0.78rem;padding:6px 8px;border-radius:10px;background:var(--glass);color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
 
-    /* Animación hover */
-    .video-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-        border-color: #333;
-    }
+  /* Empty state */
+  .empty{padding:40px;text-align:center;color:var(--muted);background:transparent;border-radius:12px}
 
-    .video-img {
-        width: 100%;
-        height: 170px;
-        object-fit: cover;
-        transition: var(--transition);
-    }
+  /* FOOTER */
+  footer{padding:30px 18px;text-align:center;color:var(--muted);font-size:0.92rem}
 
-    .video-card:hover .video-img {
-        filter: brightness(1.12);
-    }
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .nav-actions input{display:none}
+    .hamburger{display:inline-flex}
+  }
+  @media(max-width:560px){
+    .hero{padding:22px 12px}
+    .hero h1{font-size:1.6rem}
+    .nav-inner{padding:10px 12px}
+    .meta{padding:12px}
+    .thumb{height:150px}
+  }
 
-    /* Texto video */
-    .video-content {
-        padding: 18px;
-    }
+  /* small transitions */
+  .fade-in { animation: fadeIn .5s ease both }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
 
-    .video-content h2 {
-        font-size: 1.2rem;
-        margin: 0 0 8px;
-    }
-
-    .descripcion {
-        font-size: 0.95rem;
-        color: var(--text-secondary);
-        margin-bottom: 6px;
-    }
-
-    .canal {
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-        opacity: 0.8;
-    }
-
-    /*--------------------------------------*/
-    /* FOOTER */
-    /*--------------------------------------*/
-    footer {
-        text-align: center;
-        color: var(--text-secondary);
-        padding: 40px 0;
-        font-size: 0.9rem;
-    }
-
-    /*--------------------------------------*/
-    /* RESPONSIVE */
-    /*--------------------------------------*/
-    @media (max-width: 480px) {
-        .hero h1 {
-            font-size: 2.2rem;
-        }
-        .video-img {
-            height: 150px;
-        }
-    }
+  /* subtle focus */
+  .focus-ring:focus{box-shadow:0 0 0 4px rgba(78,156,255,0.12)}
 
 </style>
 </head>
 <body>
 
-    <!-- HERO -->
-    <div class="hero">
-        <h1>Galería de Videos</h1>
-        <p>Explora una colección minimalista, elegante y totalmente responsive.</p>
+<!-- NAV -->
+<nav>
+  <div class="nav-inner wrap">
+    <div class="brand">
+      <div class="logo">V</div>
+      <div>
+        <div style="font-size:0.98rem">VideoHub</div>
+        <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">Colección personal</div>
+      </div>
     </div>
 
-    <!-- SECCIÓN DE VIDEOS -->
-    <div class="video-section">
+    <div class="nav-actions" role="navigation" aria-label="navegacion principal">
+      <input id="search" type="search" placeholder="Buscar título, descripción o canal..." aria-label="Buscar videos" />
+      <select id="filterChannel" aria-label="Filtrar por canal">
+        <option value="">Filtrar por canal</option>
+      </select>
 
-        <!-- EJEMPLO YA CON TU VIDEO E IMAGEN -->
-        <a href="https://www.youtube.com/watch?v=aGGBiJdLTxs" class="video-card" target="_blank">
-            <img src="https://i.ytimg.com/vi/aGGBiJdLTxs/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLABQK0lDvs3kFG9wdusX9VwEw2Ajw"
-            class="video-img" alt="Portada del video">
+      <button id="themeToggle" title="Alternar tema" aria-label="Alternar tema">🌓</button>
 
-            <div class="video-content">
-                <h2>Ejemplo – Video 1</h2>
-                <p class="descripcion">Descripción breve del contenido.</p>
-                <p class="canal">Canal: Ejemplo Oficial</p>
-            </div>
-        </a>
-
-        <!-- COPIA ESTO PARA AGREGAR MÁS VIDEOS -->
-        <!--
-        <a href="LINK_DEL_VIDEO" class="video-card" target="_blank">
-            <img src="LINK_DE_LA_IMAGEN" class="video-img" alt="">
-            <div class="video-content">
-                <h2>Título del Video</h2>
-                <p class="descripcion">Descripción del video.</p>
-                <p class="canal">Canal: Nombre del Canal</p>
-            </div>
-        </a>
-        -->
-
+      <button class="hamburger" id="menuBtn" aria-label="Abrir menú">☰</button>
     </div>
+  </div>
+</nav>
 
-    <!-- FOOTER -->
-    <footer>
-        Sitio desarrollado en HTML + CSS. Totalmente personalizable.
-    </footer>
+<!-- HERO -->
+<header class="hero wrap">
+  <div class="texts">
+    <h1>Galería de Videos — Minimal & Premium</h1>
+    <p>Interfaz optimizada para móviles. Haz clic en cualquier tarjeta para abrir el video en su URL original. Usa la búsqueda y filtros para encontrar rápido.</p>
+  </div>
+  <div style="min-width:180px;text-align:right">
+    <div style="background:var(--glass);padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);display:inline-block">
+      <div style="font-weight:700">Rápido</div>
+      <div style="color:var(--muted);font-size:0.9rem">Minimal y responsive</div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTROLES ADICIONALES -->
+<div class="controls wrap">
+  <div class="section-title">Tu colección</div>
+  <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+    <button id="clearFilters" class="focus-ring" title="Limpiar búsqueda y filtros">Limpiar</button>
+    <a id="addSample" class="tag" style="cursor:pointer">Agregar ejemplo</a>
+  </div>
+</div>
+
+<!-- GRID -->
+<main class="wrap">
+  <section id="grid" class="grid" aria-live="polite">
+    <!-- Las tarjetas se inyectan por JavaScript. Hay un ejemplo inicial que ya viene insertado. -->
+  </section>
+
+  <div id="empty" class="empty" style="display:none">No se encontraron videos.</div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  Hecho para gestionar enlaces de video con portadas. Copia/pega los bloques que necesites — instrucciones debajo del footer.
+</footer>
+
+<!-- INSTRUCCIONES (NO SE MUESTRA EN LA UI, pero quedan en el archivo para referencia) -->
+<template id="card-template">
+  <a class="card fade-in" target="_blank" rel="noopener noreferrer">
+    <img class="thumb" loading="lazy" alt="Portada del video">
+    <div class="meta">
+      <div class="title"></div>
+      <div class="desc"></div>
+      <div class="meta-bottom">
+        <div class="channel"></div>
+        <div class="tag">Ver</div>
+      </div>
+    </div>
+  </a>
+</template>
+
+<script>
+/*
+  Estructura de cada video (obj):
+  {
+    id: string (opcional identificador),
+    title: string,
+    url: string (enlace al video),
+    img: string (imagen de portada),
+    description: string,
+    channel: string
+  }
+
+  Instrucciones:
+  - Para añadir un video: añade un objeto al arreglo `videos` abajo.
+  - Cada tarjeta se crea automáticamente. Al hacer click abre el enlace en nueva pestaña.
+  - El select de filtros se llena automáticamente con los canales detectados.
+  - Búsqueda real-time por título, descripción y canal.
+  - Tema claro/oscuro guarda la preferencia en localStorage.
+*/
+
+(function(){
+  /* ---------- DATOS INICIALES: añade aquí tus videos ---------- */
+  const videos = [
+    {
+      id: "v1",
+      title: "Ejemplo – Video 1",
+      url: "https://www.youtube.com/watch?v=aGGBiJdLTxs",
+      img: "https://i.ytimg.com/vi/aGGBiJdLTxs/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLABQK0lDvs3kFG9wdusX9VwEw2Ajw",
+      description: "Descripción breve del contenido.",
+      channel: "Canal Ejemplo"
+    },
+
+    /* Puedes duplicar y añadir tantos objetos como necesites, por ejemplo:
+    {
+      id: "v2",
+      title: "Otro título",
+      url: "https://...",
+      img: "https://...jpg",
+      description: "Texto...",
+      channel: "Canal X"
+    }
+    */
+  ];
+  /* ------------------------------------------------------------ */
+
+  // Referencias DOM
+  const grid = document.getElementById('grid');
+  const template = document.getElementById('card-template');
+  const searchInput = document.getElementById('search');
+  const filterChannel = document.getElementById('filterChannel');
+  const empty = document.getElementById('empty');
+  const themeToggle = document.getElementById('themeToggle');
+  const clearFilters = document.getElementById('clearFilters');
+  const addSample = document.getElementById('addSample');
+
+  let state = {
+    query: '',
+    channel: ''
+  };
+
+  // Inicializar tema desde localStorage
+  const root = document.documentElement;
+  const saved = localStorage.getItem('vh_theme');
+  if(saved === 'light') root.setAttribute('data-theme','light');
+  else root.removeAttribute('data-theme');
+
+  // Rellenar grid
+  function renderList(list){
+    grid.innerHTML = '';
+    if(!list.length){
+      empty.style.display = '';
+      return;
+    } else {
+      empty.style.display = 'none';
+    }
+
+    const channels = new Set();
+
+    for(const v of list){
+      channels.add(v.channel || 'Sin canal');
+
+      const node = template.content.firstElementChild.cloneNode(true);
+      const a = node;
+      a.href = v.url;
+      a.querySelector('.thumb').src = v.img;
+      a.querySelector('.thumb').alt = 'Portada — ' + (v.title || '');
+      a.querySelector('.title').textContent = v.title || 'Sin título';
+      a.querySelector('.desc').textContent = v.description || '';
+      a.querySelector('.channel').textContent = v.channel || 'Sin canal';
+
+      // event: Ctrl/cmd + click abre en nueva pestaña (ya target blank) - comportamiento estándar
+      // accessibility: allow keyboard open
+      a.addEventListener('keydown', (ev) => {
+        if(ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          window.open(v.url, '_blank', 'noopener');
+        }
+      });
+
+      grid.appendChild(node);
+    }
+
+    // llenar filtro
+    populateChannelFilter(Array.from(channels));
+  }
+
+  function populateChannelFilter(channels){
+    // guardamos la opción seleccionada
+    const prev = filterChannel.value || '';
+    filterChannel.innerHTML = '<option value="">Filtrar por canal</option>';
+    channels.sort((a,b)=> a.localeCompare(b)).forEach(ch => {
+      const opt = document.createElement('option');
+      opt.value = ch;
+      opt.textContent = ch;
+      filterChannel.appendChild(opt);
+    });
+    // restaurar si posible
+    if(prev){
+      filterChannel.value = prev;
+    }
+  }
+
+  // Filtrado y búsqueda
+  function applyFilters(){
+    const q = state.query.trim().toLowerCase();
+    const channel = state.channel;
+    let result = videos.filter(v => {
+      const hayCanal = (channel === '' || (v.channel||'').toLowerCase() === channel.toLowerCase());
+      if(!hayCanal) return false;
+      if(!q) return true;
+      const hay = (v.title||'').toLowerCase().includes(q) ||
+                  (v.description||'').toLowerCase().includes(q) ||
+                  (v.channel||'').toLowerCase().includes(q);
+      return hay;
+    });
+    renderList(result);
+  }
+
+  // Eventos
+  searchInput.addEventListener('input', (e) => {
+    state.query = e.target.value;
+    applyFilters();
+  });
+
+  filterChannel.addEventListener('change', (e) => {
+    state.channel = e.target.value;
+    applyFilters();
+  });
+
+  clearFilters.addEventListener('click', () => {
+    state.query = '';
+    state.channel = '';
+    searchInput.value = '';
+    filterChannel.value = '';
+    applyFilters();
+  });
+
+  // Theme toggle
+  themeToggle.addEventListener('click', () => {
+    const isLight = root.getAttribute('data-theme') === 'light';
+    if(isLight){
+      root.removeAttribute('data-theme');
+      localStorage.removeItem('vh_theme');
+    } else {
+      root.setAttribute('data-theme','light');
+      localStorage.setItem('vh_theme','light');
+    }
+  });
+
+  // Agregar ejemplo (útil si quieres ver más)
+  addSample.addEventListener('click', ()=> {
+    const demo = {
+      id: 'demo-' + Date.now(),
+      title: 'Video demo añadido',
+      url: 'https://www.youtube.com/watch?v=aGGBiJdLTxs',
+      img: 'https://i.ytimg.com/vi/aGGBiJdLTxs/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLABQK0lDvs3kFG9wdusX9VwEw2Ajw',
+      description: 'Este video fue añadido como ejemplo desde el botón "Agregar ejemplo".',
+      channel: 'Canal Ejemplo'
+    };
+    videos.push(demo);
+    applyFilters();
+  });
+
+  // Inicial: llenar la UI
+  (function init(){
+    // pre-popular filter channels from videos
+    const chs = Array.from(new Set(videos.map(v=>v.channel||'Sin canal')));
+    populateChannelFilter(chs);
+    renderList(videos);
+  })();
+
+})();
+</script>
+
+<!-- INSTRUCCIONES EXHAUSTIVAS PARA AÑADIR VIDEOS (EN ORDEN) -->
+<!--
+  1) Busca la sección JS donde está el array `videos` (al principio del script).
+  2) Añade un nuevo objeto con esta plantilla (mantén la coma entre objetos):
+
+    {
+      id: "v3",
+      title: "Título del video",
+      url: "https://www.youtube.com/watch?v=ID_DEL_VIDEO",
+      img: "https://ruta/a/imagen_de_portada.jpg",
+      description: "Breve descripción",
+      channel: "Nombre del canal"
+    }
+
+  3) Guarda el archivo .html y recarga la página. La tarjeta aparecerá automáticamente.
+  4) Para usar una miniatura de YouTube: usa el patrón
+     https://i.ytimg.com/vi/ID/hq720.jpg
+     (reemplaza ID por el id del video; por ejemplo para https://www.youtube.com/watch?v=aGGBiJdLTxs el ID es aGGBiJdLTxs).
+  5) Para que la búsqueda y filtro funcionen, escribe el texto en la barra o selecciona el canal.
+  6) Para restablecer tema, pulsa el botón de la luna/sol; la preferencia se guarda en el navegador.
+-->
 
 </body>
 </html>
